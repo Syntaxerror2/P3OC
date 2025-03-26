@@ -1,4 +1,3 @@
-
 getCategories()
 createWorks();
 
@@ -146,6 +145,10 @@ if (works.length === 0) {
           updateGallery(works);  // Affiche tous les travaux
         }); 
 
+        //Ajout d'une classe aux boutons pour le css 
+        button.classList.add("buttons");
+        allButton.classList.add("buttons");
+
         
     
       filters.appendChild(button);
@@ -157,6 +160,9 @@ if (works.length === 0) {
   
    
   }
+
+
+
 
 
   
