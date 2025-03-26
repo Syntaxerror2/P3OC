@@ -153,15 +153,81 @@ if (works.length === 0) {
     
       filters.appendChild(button);
     
-
-
+      filters.addEventListener("click", function (e) {
+        if (e.target.tagName === "BUTTON") {
+            // Supprimer la classe active de tous les boutons
+            document.querySelectorAll("#filters button").forEach(btn => btn.classList.remove("active-filter"));
+    
+            // Ajouter la classe active uniquement au bouton cliqué
+            e.target.classList.add("active-filter");
+        }
+    });
+ 
     
     }) 
+
+
   
-   
-  }
+   }
+
+ 
+ 
 
 
+
+   document.getElementById("login-button").addEventListener("click", function() {
+    window.location.href = "login.html";
+   })
+
+   document.getElementById("index-button").addEventListener("click", function() {
+    window.location.href = "index.html";
+   })
+
+
+
+   /*
+   document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("login-form");
+
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault(); // Empêche la soumission classique du formulaire
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (!email || !password) {
+            alert("Veuillez remplir tous les champs !");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:5678/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Stocker le token dans le localStorage
+                localStorage.setItem("token", data.token);
+
+                // Rediriger vers la page d'administration ou une autre page
+                window.location.href = "admin.html";
+            } else {
+                alert("Identifiants incorrects !");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la connexion :", error);
+            alert("Une erreur est survenue, veuillez réessayer plus tard.");
+        }
+    });
+});
+
+*/
 
 
 
