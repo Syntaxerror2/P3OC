@@ -1,5 +1,5 @@
-//import {ajoutListenerContact} from "./contact";
-//ajoutListenerContact();
+
+
 
 getCategories()
 createWorks();
@@ -116,7 +116,6 @@ if (works.length === 0) {
 // ParseInt me renvoie un entier, target me renvoie le nombre correspondant au dataset 
 // que j'ai ajouté à mon button, qui est le works.categoryId du boutton cliqué
         const categoryId = parseInt(e.target.dataset.categoryId);
-// renommer targetCategoryId ?
         console.log(categoryId);
 //Je demande si categoryId (l'ID obtenue au click) est égal à 0, si oui on affiche tout.
 //Si non, on utilise la fonction filter pour afficher les objets correspondants dans le tableau work

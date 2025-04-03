@@ -1,48 +1,26 @@
-export function loginForm() {
-    const submit = document.querySelector("#connect-button");
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const nomRegex = /^[A-ZÀ-Ÿ][a-zà-ÿ'-]{1,49}$/;
-    submit.addEventListener("submit", function(event) {
-        const userlogs = {
-         email: event.target.document.querySelector("[name=email]").value,
-         password: event.target.document.querySelector("[name=password]").value   
-        };
+const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
 
-//Creation de la charge utile au format json
-const chargeUtile = JSON.stringify(userlogs);
-    })
-fetch("http://localhost:5678/api/users/login", {
-method: "POST",
-accept: 'application/json', 
-headers: {"content-type":  "application/json"}
-
-
-})
-}
-
-
-
-  /*
-
-  export function loginForm() {
-    const submit = document.querySelector("#connect-button");
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-   
-  
-  
-  }
-   document.addEventListener("DOMContentLoaded", function() {
-    const loginForm = document.getElementById("login-form");
-
-    loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault(); // Empêche la soumission classique du formulaire
-
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        if (!email || !password) {
-            alert("Veuillez remplir tous les champs !");
+function loginForm() {
+    const submit = document.getElementById("login-form");
+    submit.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const email = document.querySelector("[name=email]").value;
+        const password = document.querySelector("[name=password]").value
+        console.log(email);
+        console.log(password);
+        
+        if(!email || !password ) {
+            alert("Veuillez remplir tous les champs")
+            return;
+        } else if(!validateEmail(email)) {
+            alert("Veuillez rentrer une adresse mail valide")
             return;
         }
 
@@ -56,6 +34,7 @@ headers: {"content-type":  "application/json"}
             });
 
             const data = await response.json();
+            console.log(data);
 
             if (response.ok) {
                 // Stocker le token dans le localStorage
@@ -68,8 +47,11 @@ headers: {"content-type":  "application/json"}
             console.error("Erreur lors de la connexion :", error);
             alert("Une erreur est survenue, veuillez réessayer plus tard.");
         }
-    });
-});
+  
+  
+  })
 
-*/
+}
+
+loginForm();
 
