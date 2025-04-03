@@ -1,5 +1,9 @@
+//import {ajoutListenerContact} from "./contact";
+//ajoutListenerContact();
+
 getCategories()
 createWorks();
+
 
 
 //fetch des travaux à afficher
@@ -23,8 +27,8 @@ async function getWorks() {
 
 }
 
-//fetch des catégories
 
+//fetch des catégories
 async function getCategories() {
   const url = "http://localhost:5678/api/categories";
   try {
@@ -66,6 +70,8 @@ if (works.length === 0) {
     gallery.innerHTML = "<p>Aucun projet trouvé.</p>";
     return;
 }
+
+//Affichage dynamique en récupérant chaque propriété du fetch
   works.forEach(work => {
     const figure = document.createElement("figure");
     const image = document.createElement("img")
@@ -86,7 +92,7 @@ if (works.length === 0) {
 
     
 
-      //// Création séparée du bouton "Tous"
+//// Création séparée du bouton "Tous"
       const allButton = document.createElement("button")
       allButton.dataset.categoryId = 0;
       allButton.innerHTML = "Tous";
@@ -95,7 +101,7 @@ if (works.length === 0) {
        
 
   
-      // Création des boutons par récupération des catégories via fetch
+// Création des boutons par récupération des catégories via fetch
       categories.forEach(category => {
       const button = document.createElement("button")
       button.dataset.categoryId = category.id;
@@ -113,7 +119,7 @@ if (works.length === 0) {
 // renommer targetCategoryId ?
         console.log(categoryId);
 //Je demande si categoryId (l'ID obtenue au click) est égal à 0, si oui on affiche tout.
-//Si non, on utilise la fonction filter pour me renvoyer les objets correspondants dans le tableau work
+//Si non, on utilise la fonction filter pour afficher les objets correspondants dans le tableau work
         const filteredWork = categoryId === 0 ? works : works.filter(work => work.categoryId === categoryId)
       
         updateGallery(filteredWork)
@@ -136,31 +142,36 @@ if (works.length === 0) {
           gallery.appendChild(figure);
 
          }
-         )
-         }
-
-
+         )}
          // Au click sur le bouton "Tous", l'ensemble du tableau works est appelé
          allButton.addEventListener("click", function () {
           updateGallery(works);  // Affiche tous les travaux
         }); 
 
+
+
+
+
         //Ajout d'une classe aux boutons pour le css 
         button.classList.add("buttons");
         allButton.classList.add("buttons");
+        filters.appendChild(button);
 
-        
-    
-      filters.appendChild(button);
+      //Ajout d'un effet sur les filtres lors de leur selection
     
       filters.addEventListener("click", function (e) {
-        if (e.target.tagName === "BUTTON") {
+        if (e.target.className === "buttons") {
             // Supprimer la classe active de tous les boutons
-            document.querySelectorAll("#filters button").forEach(btn => btn.classList.remove("active-filter"));
-    
+            document.querySelectorAll(".buttons").forEach(btn => btn.classList.remove("active-filter"));
+          //  querySelectorAll("#filters button")
             // Ajouter la classe active uniquement au bouton cliqué
             e.target.classList.add("active-filter");
         }
+
+        const test1 = document.querySelectorAll(".buttons")
+        const test2 = document.querySelector(".buttons")
+        console.log(test1);
+        console.log(test2);
     });
  
     
@@ -170,10 +181,7 @@ if (works.length === 0) {
   
    }
 
- 
- 
-
-
+   //Lien vers les pages au clic
 
    document.getElementById("login-button").addEventListener("click", function() {
     window.location.href = "login.html";
@@ -184,50 +192,31 @@ if (works.length === 0) {
    })
 
 
+  //Recuperation des données utilisateurs
 
-   /*
-   document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.getElementById("login-form");
+  function signInForm() {
+  // async ?
+    const loginForm = document.getElementById(".sign-in");
+    loginForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    const user = {
+      name: event.target.document.querySelector("[name=name]").value,
+      email: event.target.document.querySelector("[name=email]").value,
+      message: event.target.document.querySelector("[name=message]").value
+    }
+  //Création de la charge utile au format JSON
 
-    loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault(); // Empêche la soumission classique du formulaire
+    })
+  }
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
 
-        if (!email || !password) {
-            alert("Veuillez remplir tous les champs !");
-            return;
-        }
 
-        try {
-            const response = await fetch("http://localhost:5678/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, password })
-            });
 
-            const data = await response.json();
 
-            if (response.ok) {
-                // Stocker le token dans le localStorage
-                localStorage.setItem("token", data.token);
 
-                // Rediriger vers la page d'administration ou une autre page
-                window.location.href = "admin.html";
-            } else {
-                alert("Identifiants incorrects !");
-            }
-        } catch (error) {
-            console.error("Erreur lors de la connexion :", error);
-            alert("Une erreur est survenue, veuillez réessayer plus tard.");
-        }
-    });
-});
+ 
 
-*/
+
 
 
 

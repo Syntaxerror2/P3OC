@@ -186,7 +186,9 @@ footer nav ul {
 	margin: 2em
 }
 
-/** elements ajoutés via JS **/
+
+
+/** elements ajoutés dynamiquement via JS **/
 
 #filters {
 	display: flex;
