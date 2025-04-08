@@ -79,12 +79,13 @@ if (works.length === 0) {
     image.alt = work.title
     const figcaption = document.createElement("figcaption")
     figcaption.innerHTML = work.title;
-    
+    console.log(work);
     figure.appendChild(image);
     figure.appendChild(figcaption)
     gallery.appendChild(figure);
 
 })
+
     
 
     const filters = document.getElementById("filters")
@@ -226,8 +227,6 @@ document.addEventListener("DOMContentLoaded", function () {
         authentification.href = "#";
         const button = document.getElementById("modify");
         button.classList.remove("no-display-button"); // Ajoute le bouton "modifier" à la connexion
-        const galleryButton = document.querySelector(".galleryButton")
-        galleryButton.style.display("none"); //On supprime les filtres à la connexion
         authentification.addEventListener("click", function (event) {
               event.preventDefault();
               logout();
@@ -249,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function addModale() {
+  
   const modale = document.getElementById("myModal");
   const span = document.querySelector(".close");
   const button = document.getElementById("modify");
@@ -269,7 +269,23 @@ function addModale() {
 }
 addModale();
 
+async function modaleDisplay() {
+  const modaleGallery = document.querySelector(".modal-main-display");
+  const works = await getWorks()
+  console.log(works)
+
+ works.forEach(work => {
+ const image = document.createElement("img");
+ image.classList.add("modal-image");
+ image.src = work.imageUrl;
+ console.log(work.imageUrl)
+ modaleGallery.appendChild(image);
+
+ })
+
   
+}
+modaleDisplay()
 
 
         

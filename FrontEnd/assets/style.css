@@ -267,15 +267,31 @@ footer nav ul {
 	margin: 15% auto; 
 	padding: 20px;
 	border: 1px solid #888;
-	width: 50%; 
+	width: 40%; 
 	height: 70%;
 	border-radius: 2%;
   }
 
   .modale-title {
 	text-align: center;
-	font-size: 30px;
+	font-size: 27px;
 	margin-top: 50px;
+  }
+
+  .modal-main-display {
+	display: flex;
+    flex-wrap: wrap;
+	gap: 2%;
+	margin-left: 10%;
+	margin-right: 10%;
+	justify-content: stretch;
+	margin-top: 40px;
+  }
+
+  .modal-image {
+	margin-top: 2%;
+	width: 22%;
+	height: 120px;
   }
 
 
