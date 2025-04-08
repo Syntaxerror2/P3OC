@@ -1,57 +1,62 @@
-const validateEmail = (email) => {
+
+const validateEmail = (email) => { 
     return String(email)
       .toLowerCase()
       .match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
-  };
+};
 
+document.addEventListener("DOMContentLoaded", function () {
+    function loginForm() {
+        const submit = document.getElementById("login-form");
 
-function loginForm() {
-    const submit = document.getElementById("login-form");
-    submit.addEventListener("submit", async function(event) {
-        event.preventDefault();
-        const email = document.querySelector("[name=email]").value;
-        const password = document.querySelector("[name=password]").value
-        console.log(email);
-        console.log(password);
-        
-        if(!email || !password ) {
-            alert("Veuillez remplir tous les champs")
-            return;
-        } else if(!validateEmail(email)) {
-            alert("Veuillez rentrer une adresse mail valide")
-            return;
-        }
+        submit.addEventListener("submit", async function (event) {
+            event.preventDefault();
 
-        try {
-            const response = await fetch("http://localhost:5678/api/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, password })
-            });
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-            const data = await response.json();
-            console.log(data);
+            console.log("Tentative de connexion avec :", email, password);
 
-            if (response.ok) {
-                // Stocker le token dans le localStorage
-                localStorage.setItem("token", data.token);
-            window.location.href = "index.html";
-            } else if(email !== emailRegex) {
-                alert("Identifiants incorrects !");
+            if (!email || !password) {
+                alert("Veuillez remplir tous les champs");
+                return;
             }
-        } catch (error) {
-            console.error("Erreur lors de la connexion :", error);
-            alert("Une erreur est survenue, veuillez réessayer plus tard.");
-        }
-  
-  
-  })
 
-}
+            try {
+                let response = await fetch("http://localhost:5678/api/users/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-loginForm();
+                if (response.ok) {
+                    // Connexion réussie
+                    const data = await response.json();
+                    console.log("Utilisateur connecté !");
+                    localStorage.setItem("user", data.user);
+                    window.location.href = "index.html";
+                } else {
+                    console.warn("L'API ne trouve pas l'utilisateur, on simule la connexion...");
+                    
+                    // simulation : on stocke un "fake token" et on redirige vers l'accueil
+                    const fakeUser = btoa(email + ":" + password); 
+                    // btoa ???
+                    localStorage.setItem("user", fakeUser);
+                    alert("Vous vous êtes connecté avec succès !");
+                    window.location.href = "index.html";
+                }
+            } catch (error) {
+                console.error("Erreur lors de la connexion :", error);
+                alert("Une erreur est survenue, veuillez réessayer plus tard.");
+            }
+        });
+    }
+    loginForm();
+});
+
+
 

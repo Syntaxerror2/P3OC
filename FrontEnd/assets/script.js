@@ -95,7 +95,8 @@ if (works.length === 0) {
 //// Création séparée du bouton "Tous"
       const allButton = document.createElement("button")
       allButton.dataset.categoryId = 0;
-      allButton.innerHTML = "Tous";
+      allButton.innerHTML = "Tous"
+      allButton.classList.add("galleryButton")
       filters.appendChild(allButton);
 
        
@@ -104,6 +105,7 @@ if (works.length === 0) {
 // Création des boutons par récupération des catégories via fetch
       categories.forEach(category => {
       const button = document.createElement("button")
+      button.classList.add("galleryButton");
       button.dataset.categoryId = category.id;
       button.innerHTML = category.name;
       filters.appendChild(button);
@@ -210,14 +212,62 @@ if (works.length === 0) {
 
 
 
+// On permet à l'utilisateur de se log out en supprimant
+// les données obtenues dans le localStorage
+
+document.addEventListener("DOMContentLoaded", function () {
+  const authentification = document.getElementById("authentification");
+
+  function checkLogIn() {
+      const user = localStorage.getItem("user");
+
+      if (user) {
+        authentification.textContent = "Log out";
+        authentification.href = "#";
+        const button = document.getElementById("modify");
+        button.classList.remove("no-display-button"); // Ajoute le bouton "modifier" à la connexion
+        const galleryButton = document.querySelector(".galleryButton")
+        galleryButton.style.display("none"); //On supprime les filtres à la connexion
+        authentification.addEventListener("click", function (event) {
+              event.preventDefault();
+              logout();
+          });
+      } else {
+        authentification.textContent = "Log in";
+        authentification.href = "login.html"; // Redirige vers la page de connexion
+      }
+  }
+
+  function logout() {
+      localStorage.removeItem("user");
+      alert("Vous avez été déconnecté !");
+      window.location.reload();
+  }
+
+  checkLogIn();
+});
 
 
+function addModale() {
+  const modale = document.getElementById("myModal");
+  const span = document.querySelector(".close");
+  const button = document.getElementById("modify");
 
- 
-
-
-
-
+  button.onclick = function() {
+    modale.style.display = "block";
+  }
+  // quand l'utilisateur clique sur la croix on ferme la modale
+  span.onclick = function() {
+    modale.style.display = "none";
+  }
+  // quand l'utilisateur clique en dehors de la modale, one ferme la fenêtre
+  window.onclick = function(event) {
+    if (event.target == modale) {
+      modale.style.display = "none";
+    }
+  }
+}
+addModale();
 
   
 

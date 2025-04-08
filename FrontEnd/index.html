@@ -7,6 +7,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
@@ -17,7 +18,7 @@
 		<ul>
 			<li class="nav" id="index-button">projets</li>
 			<li class="nav">contact</li>
-			<li class="nav" id="login-button">login</li>
+			<li class="nav" id="login-button"><a href="#" id="authentification">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -35,8 +36,28 @@
 		</article>
 	</section>
 	<section id="portfolio">
+	<div class="projets-container">
 		<h2>Mes Projets</h2>
-		<div id="filters"></div>
+	<a class="no-display-button button-container" id="modify">
+		<i class="fa-solid fa-pen-to-square"></i>
+		<button class="modify-button">Modifier</button>	
+	</a>
+	</div>
+
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+		<div class="modale-header-display">
+		  <h3 class="modale-title">Galerie photo</h3>
+		</div>
+		<div class="modal-main-display">
+		
+		</div>
+		</div>
+	  </div>
+
+		<div id="filters">
+		</div>
 		<div class="gallery">
 		</div>
 	</section>
@@ -53,6 +74,10 @@
 			<input type="submit" value="Envoyer" id="submitButton">
 		</form>
 	</section>
+
+
+
+
 </main>
 
 <footer>

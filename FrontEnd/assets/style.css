@@ -219,6 +219,83 @@ footer nav ul {
     border: none;
 }
 
+/* Bouton modifier */
+.projets-container {
+	display: flex;
+	justify-content: center;
+	gap: 2%;
+}
+
+.button-container {
+	cursor: pointer;
+}
+
+.modify-button {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	margin-top: 10px;
+	font-family: 'Work Sans';
+}
+
+.no-display-button {
+	display: none;
+}
+
+/** Modale **/
+
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* contenu de la modale */
+  .modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; 
+	padding: 20px;
+	border: 1px solid #888;
+	width: 50%; 
+	height: 70%;
+	border-radius: 2%;
+  }
+
+  .modale-title {
+	text-align: center;
+	font-size: 30px;
+	margin-top: 50px;
+  }
+
+
+  
+  /* Close Button */
+  .close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+  }
+
+
 
 /** login page **/
 
