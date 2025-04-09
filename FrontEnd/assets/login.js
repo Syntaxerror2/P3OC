@@ -41,11 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = "index.html";
                 } else {
                     console.warn("L'API ne trouve pas l'utilisateur, on simule la connexion...");
-                    
+                    const data = await response.json();
                     // simulation : on stocke un "fake token" et on redirige vers l'accueil
-                    const fakeUser = btoa(email + ":" + password); 
-                    // btoa ???
-                    localStorage.setItem("user", fakeUser);
+                    localStorage.setItem("user", data.user);
                     alert("Vous vous êtes connecté avec succès !");
                     window.location.href = "index.html";
                 }

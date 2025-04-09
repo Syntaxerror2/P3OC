@@ -97,7 +97,6 @@ if (works.length === 0) {
       const allButton = document.createElement("button")
       allButton.dataset.categoryId = 0;
       allButton.innerHTML = "Tous"
-      allButton.classList.add("galleryButton")
       filters.appendChild(allButton);
 
        
@@ -106,7 +105,6 @@ if (works.length === 0) {
 // Création des boutons par récupération des catégories via fetch
       categories.forEach(category => {
       const button = document.createElement("button")
-      button.classList.add("galleryButton");
       button.dataset.categoryId = category.id;
       button.innerHTML = category.name;
       filters.appendChild(button);
@@ -271,21 +269,45 @@ addModale();
 
 async function modaleDisplay() {
   const modaleGallery = document.querySelector(".modal-main-display");
+ 
   const works = await getWorks()
   console.log(works)
 
  works.forEach(work => {
+ /*
  const image = document.createElement("img");
  image.classList.add("modal-image");
  image.src = work.imageUrl;
  console.log(work.imageUrl)
  modaleGallery.appendChild(image);
+ */
+
+// Création d'une div qui contient l'icone et l'image
+const divProjets = document.createElement("div");
+modaleGallery.appendChild(divProjets)
+divProjets.classList.add("image-display");
+
+// Création de l'image récupérée via fetch
+const image = document.createElement("img");
+image.classList.add("modal-image");
+image.src = work.imageUrl;
+console.log(work.imageUrl);
+divProjets.appendChild(image);
+
+ 
+
+const deleteButton = document.createElement("i");
+divProjets.appendChild(deleteButton);
+deleteButton.classList.add("delete-icon");
+deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+
+
 
  })
-
-  
 }
 modaleDisplay()
+
+
 
 
         

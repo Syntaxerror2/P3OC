@@ -290,9 +290,33 @@ footer nav ul {
 
   .modal-image {
 	margin-top: 2%;
-	width: 22%;
-	height: 120px;
+	width: 100%;
+	height: 110px;
+	display: block;
   }
+
+
+.image-display {
+	margin-top: 2%;
+	width: 18%;
+	height: 110px;
+	position: relative;
+	display: inline-block; 
+}
+
+  .delete-icon {
+	position: absolute;
+	top: 5px; /* Ajuste selon ton besoin */
+	right: 5px;
+	color: white;
+	background-color: black; /* pour lisibilité */
+	padding: 5px;
+	border-radius: 10%;
+	cursor: pointer;
+	font-size: 16px; /* Ajuste selon taille image */
+  }
+
+  
 
 
   
