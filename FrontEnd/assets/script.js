@@ -4,7 +4,13 @@
 getCategories()
 createWorks();
 
+document.addEventListener("DOMContentLoaded", () => {
+  localStorage.removeItem("deletedWork"); // Reset les projets supprimés
 
+  // Tu peux éventuellement appeler les fonctions ici si besoin
+  // createWorks();
+  // modaleDisplay();
+});
 
 //fetch des travaux à afficher
 async function getWorks() {
@@ -54,7 +60,11 @@ async function getCategories() {
 //Affichage global
 async function createWorks() {
    
-  const works = await getWorks()
+  const allWorks = await getWorks();
+  const deletedWorks = getDeleteWork();
+  console.log(deletedWorks);
+  //On filtre les projets 
+  const works = allWorks.filter(work => !deletedWorks.includes(work.id)); 
   const gallery = document.querySelector(".gallery")
 
 
@@ -250,11 +260,11 @@ function addModale() {
   const modale = document.getElementById("myModal");
   const span = document.querySelector(".close");
   const button = document.getElementById("modify");
-
+// Quand on clique sur le bouton, on ouvre la modale
   button.onclick = function() {
     modale.style.display = "block";
   }
-  // quand l'utilisateur clique sur la croix on ferme la modale
+  // quand l'utilisateur clique sur la croix on ferme la fenêtre modale
   span.onclick = function() {
     modale.style.display = "none";
   }
@@ -269,19 +279,14 @@ addModale();
 
 async function modaleDisplay() {
   const modaleGallery = document.querySelector(".modal-main-display");
- 
   const works = await getWorks()
-  console.log(works)
+  const deletedWork = getDeleteWork();
+  const filteredWorks = works.filter(work => !deletedWork.includes(work.id));
 
- works.forEach(work => {
- /*
- const image = document.createElement("img");
- image.classList.add("modal-image");
- image.src = work.imageUrl;
- console.log(work.imageUrl)
- modaleGallery.appendChild(image);
- */
+  modaleGallery.innerHTML = "";
 
+ //works.forEach(work => {
+  filteredWorks.forEach(work => {
 // Création d'une div qui contient l'icone et l'image
 const divProjets = document.createElement("div");
 modaleGallery.appendChild(divProjets)
@@ -294,18 +299,65 @@ image.src = work.imageUrl;
 console.log(work.imageUrl);
 divProjets.appendChild(image);
 
- 
-
+ // Création de l'icône "delete"
 const deleteButton = document.createElement("i");
 divProjets.appendChild(deleteButton);
 deleteButton.classList.add("delete-icon");
 deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
 
+//Suppression au click
 
+deleteButton.addEventListener("click", () => {
+  saveDeletedWork(work.id);
+  divProjets.remove(); // Supprime le projet de la modale
+  displayFilteredWorks() //met à jour la gallerie
+})
 
  })
 }
 modaleDisplay()
+
+
+
+
+// Fonctions utilitaires pour le fonctionnement du LocalStorage
+function saveDeletedWork(id) {
+  let deletedWork = JSON.parse(localStorage.getItem("deletedWork")) || [];
+  if(!deletedWork.includes(id)) {
+    deletedWork.push(id);
+    localStorage.setItem("deletedWork", JSON.stringify(deletedWork));
+  }
+}
+
+
+function getDeleteWork() {
+  return JSON.parse(localStorage.getItem("deletedWork")) || [];
+}
+
+// Fonction permettant l'affichage de la gallerie sans les projets supprimés
+async function displayFilteredWorks() {
+  const allWorks = await getWorks();
+  const deletedWorks = getDeleteWork();
+  const filteredWorks = allWorks.filter(work => !deletedWorks.includes(work.id));
+
+  const gallery = document.querySelector(".gallery");
+  if (!gallery) return;
+
+  gallery.innerHTML = "";
+
+  filteredWorks.forEach(work => {
+    const figure = document.createElement("figure");
+    const image = document.createElement("img");
+    image.src = work.imageUrl;
+    image.alt = work.title;
+    const figcaption = document.createElement("figcaption");
+    figcaption.innerHTML = work.title;
+
+    figure.appendChild(image);
+    figure.appendChild(figcaption);
+    gallery.appendChild(figure);
+  });
+}
 
 
 
