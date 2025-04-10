@@ -309,7 +309,7 @@ function saveDeletedWork(id) {
 
 
 
-//************Supprimer et Ajouter des projets dans la modale****************/
+//************Supprimer des projets dans la modale****************/
 
 function getDeleteWork() {
 //Si on ne trouve rien dans le localStorage, on retourne un tableau vide
@@ -340,10 +340,56 @@ async function displayFilteredWorks() {
     figure.appendChild(figcaption);
     gallery.appendChild(figure);
 
-
-    
   });
 }
+
+/***********Ajoute des projets dans la modale*************/
+
+//Affichage du menu "ajoutez un projet" de la modale
+function addProject() {
+   const modale = document.getElementById("myModal");
+   const addButton = document.querySelector(".modal-add-button");
+   const modalContent = document.querySelector(".modal-content")
+   addButton.addEventListener("click", () => {
+  // Au clic sur "Ajouter un contenu"
+   modalContent.innerHTML = "";
+
+
+// Création de la div contenant les spans et icones
+   const spanContainer = document.createElement("div");
+   spanContainer.classList.add("span-container");
+   modalContent.appendChild(spanContainer)
+
+//Création des spans delete et icone supprimer
+   const backArrowSpan = document.createElement("i");
+   backArrowSpan.innerHTML = `<i class="fa-solid fa-arrow-left"></i>`
+   spanContainer.appendChild(backArrowSpan);
+   const closeSpan = document.createElement("span");
+   closeSpan.innerHTML = `<span class="close">&times;</span>`
+   spanContainer.appendChild(closeSpan);
+  
+// Quand on clique sur supprimer ou en dehors de la modale, on ferme la fenêtre
+  closeSpan.onclick = function() {
+    modale.style.display = "none";
+  }
+ 
+  
+  
+
+
+   const inputFile = document.createElement("input");
+   modalContent.appendChild(inputFile);
+   inputFile.innerHTML =`<input type="file" accept="image/png, image/jpeg"></input>`
+   inputFile.classList.add("input-file")
+
+
+   
+
+
+   })
+}
+addProject();
+
 
 
 
