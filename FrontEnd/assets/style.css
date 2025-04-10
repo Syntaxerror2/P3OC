@@ -249,16 +249,16 @@ footer nav ul {
 /** Modale **/
 
 .modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
+	display: none; 
+	position: fixed; 
+	z-index: 1; 
 	left: 0;
 	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0,0,0); /* Fallback color */
-	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	width: 100%; 
+	height: 100%; 
+	overflow: auto; 
+	background-color: rgb(0,0,0); 
+	background-color: rgba(0,0,0,0.4); 
   }
   
   /* contenu de la modale */
@@ -305,21 +305,19 @@ footer nav ul {
 
   .delete-icon {
 	position: absolute;
-	top: 5px; /* Ajuste selon ton besoin */
+	top: 5px; 
 	right: 5px;
 	color: white;
-	background-color: black; /* pour lisibilité */
+	background-color: black; 
 	padding: 5px;
 	border-radius: 10%;
 	cursor: pointer;
-	font-size: 16px; /* Ajuste selon taille image */
+	font-size: 16px; 
   }
 
-  
-
 
   
-  /* Close Button */
+  /* Modal close Button */
   .close {
 	color: #aaa;
 	float: right;
@@ -334,6 +332,34 @@ footer nav ul {
 	cursor: pointer;
   }
 
+  /* Modal border */
+
+  .modal-border {
+	border-top: #b3b3b3 1px solid ;
+	margin-top: 50px;
+	margin-left: 10%;
+	width: 80%;
+  }
+
+  /* Modal Add button */
+  .modal-add-button {
+	font-family: "Syne";
+	margin-bottom: 2em;
+    font-weight: 700;
+    color: white;
+    background-color: #1d6154;
+    margin-left: 0;
+    width: 280px;
+    text-align: center;
+    border-radius: 60px;
+    height: 45px;
+    font-size: 1.2em;
+    border: #1d6154 1px solid ;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    cursor: pointer;
+	margin-left: 20%;
+	margin-top: 30px;
+  }
 
 
 /** login page **/
