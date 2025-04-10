@@ -5,14 +5,13 @@ getCategories()
 createWorks();
 
 document.addEventListener("DOMContentLoaded", () => {
-  localStorage.removeItem("deletedWork"); // Reset les projets supprimés
+  localStorage.removeItem("deletedWork"); 
+// Reset les projets supprimés dans la modale au rechargement de la page
 
-  // Tu peux éventuellement appeler les fonctions ici si besoin
-  // createWorks();
-  // modaleDisplay();
 });
 
-//fetch des travaux à afficher
+/****************Fetch des travaux à afficher****************/
+
 async function getWorks() {
     const url = 'http://localhost:5678/api/works';
     try {
@@ -34,7 +33,8 @@ async function getWorks() {
 }
 
 
-//fetch des catégories
+/********************Fetch des catégories**********************/
+
 async function getCategories() {
   const url = "http://localhost:5678/api/categories";
   try {
@@ -57,9 +57,9 @@ async function getCategories() {
 }
 
 
-//Affichage global
+/***********Affichage dynamique de la page index via fetch global*******/
+
 async function createWorks() {
-   
   const allWorks = await getWorks();
   const deletedWorks = getDeleteWork();
   console.log(deletedWorks);
@@ -73,7 +73,7 @@ async function createWorks() {
     return;
 }
 
-// On vide la galerie avant d'ajouter les nouvelles figures
+//On vide la galerie avant d'ajouter les nouvelles figures
 gallery.innerHTML = "";
 
 if (works.length === 0) {
@@ -97,11 +97,10 @@ if (works.length === 0) {
 })
 
     
+/*************Affichage dynamique des filtres******************* */
 
     const filters = document.getElementById("filters")
     const categories = await getCategories();
-
-    
 
 //// Création séparée du bouton "Tous"
       const allButton = document.createElement("button")
@@ -109,9 +108,6 @@ if (works.length === 0) {
       allButton.innerHTML = "Tous"
       filters.appendChild(allButton);
 
-       
-
-  
 // Création des boutons par récupération des catégories via fetch
       categories.forEach(category => {
       const button = document.createElement("button")
@@ -119,13 +115,11 @@ if (works.length === 0) {
       button.innerHTML = category.name;
       filters.appendChild(button);
 
-
-
         button.addEventListener("click", function(e) {
         console.log(e)
 
 // ParseInt me renvoie un entier, target me renvoie le nombre correspondant au dataset 
-// que j'ai ajouté à mon button, qui est le works.categoryId du boutton cliqué
+// que j'ai ajouté à mon button, à savoir le works.categoryId du boutton cliqué
         const categoryId = parseInt(e.target.dataset.categoryId);
         console.log(categoryId);
 //Je demande si categoryId (l'ID obtenue au click) est égal à 0, si oui on affiche tout.
@@ -157,11 +151,6 @@ if (works.length === 0) {
          allButton.addEventListener("click", function () {
           updateGallery(works);  // Affiche tous les travaux
         }); 
-
-
-
-
-
         //Ajout d'une classe aux boutons pour le css 
         button.classList.add("buttons");
         allButton.classList.add("buttons");
@@ -171,10 +160,10 @@ if (works.length === 0) {
     
       filters.addEventListener("click", function (e) {
         if (e.target.className === "buttons") {
-            // Supprimer la classe active de tous les boutons
+          // Supprimer la classe active de tous les boutons
             document.querySelectorAll(".buttons").forEach(btn => btn.classList.remove("active-filter"));
           //  querySelectorAll("#filters button")
-            // Ajouter la classe active uniquement au bouton cliqué
+          // Ajouter la classe active uniquement au bouton cliqué
             e.target.classList.add("active-filter");
         }
 
@@ -183,12 +172,7 @@ if (works.length === 0) {
         console.log(test1);
         console.log(test2);
     });
- 
-    
     }) 
-
-
-  
    }
 
    //Lien vers les pages au clic
@@ -202,37 +186,27 @@ if (works.length === 0) {
    })
 
 
-  //Recuperation des données utilisateurs
-
-  function signInForm() {
-  // async ?
-    const loginForm = document.getElementById(".sign-in");
-    loginForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-    const user = {
-      name: event.target.document.querySelector("[name=name]").value,
-      email: event.target.document.querySelector("[name=email]").value,
-      message: event.target.document.querySelector("[name=message]").value
-    }
-  //Création de la charge utile au format JSON
-
-    })
-  }
 
 
-
-// On permet à l'utilisateur de se log out en supprimant
-// les données obtenues dans le localStorage
+/************Chargement et modification de la page index si l'utilisateur est connecté ******************/
 
 document.addEventListener("DOMContentLoaded", function () {
   const authentification = document.getElementById("authentification");
 
   function checkLogIn() {
       const user = localStorage.getItem("user");
-
+// On permet à l'utilisateur de se log out en supprimant
+// les données obtenues dans le localStorage
       if (user) {
         authentification.textContent = "Log out";
         authentification.href = "#";
+
+// Si l'utilisateur est connecté, on ajoute la modale
+// On change "log in" par "log out"
+// Et on supprime les filtres
+
+        const filters = document.getElementById("filters");
+        filters.style.display = "none"; // Si l'utilisateur est connecté, on supprime les filtres
         const button = document.getElementById("modify");
         button.classList.remove("no-display-button"); // Ajoute le bouton "modifier" à la connexion
         authentification.addEventListener("click", function (event) {
@@ -254,6 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
   checkLogIn();
 });
 
+
+
+/**********Affichage dynamique de la modale*************/
 
 function addModale() {
   
@@ -317,8 +294,8 @@ deleteButton.addEventListener("click", () => {
 }
 modaleDisplay()
 
-
-
+//Récupération de la de gallerie en global Scope car elle reservira 
+const gallery = document.querySelector(".gallery");
 
 // Fonctions utilitaires pour le fonctionnement du LocalStorage
 function saveDeletedWork(id) {
@@ -330,7 +307,12 @@ function saveDeletedWork(id) {
 }
 
 
+
+
+//************Supprimer et Ajouter des projets dans la modale****************/
+
 function getDeleteWork() {
+//Si on ne trouve rien dans le localStorage, on retourne un tableau vide
   return JSON.parse(localStorage.getItem("deletedWork")) || [];
 }
 
@@ -338,9 +320,10 @@ function getDeleteWork() {
 async function displayFilteredWorks() {
   const allWorks = await getWorks();
   const deletedWorks = getDeleteWork();
+  //On filtre de façon à ne conserver que les projets dont l'id n'est pas inclue dans deletedWorks (localStorage)
   const filteredWorks = allWorks.filter(work => !deletedWorks.includes(work.id));
 
-  const gallery = document.querySelector(".gallery");
+  
   if (!gallery) return;
 
   gallery.innerHTML = "";
@@ -352,12 +335,16 @@ async function displayFilteredWorks() {
     image.alt = work.title;
     const figcaption = document.createElement("figcaption");
     figcaption.innerHTML = work.title;
-
+    
     figure.appendChild(image);
     figure.appendChild(figcaption);
     gallery.appendChild(figure);
+
+
+    
   });
 }
+
 
 
 

@@ -58,3 +58,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
+// A compléter
+
+  //Recuperation des données utilisateurs
+
+  function signInForm() {
+    // async ?
+      const loginForm = document.getElementById(".sign-in");
+      loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const user = {
+        name: event.target.document.querySelector("[name=name]").value,
+        email: event.target.document.querySelector("[name=email]").value,
+        message: event.target.document.querySelector("[name=message]").value
+      }
+    //Création de la charge utile au format JSON
+  
+      })
+    }
