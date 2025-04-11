@@ -32,8 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     body: JSON.stringify({ email, password })
                 });
-
-                if (response.ok) {
+                console.log(response);
+                if (response.ok === true) {
                     // Connexion réussie
                     const data = await response.json();
                     console.log("Utilisateur connecté !");
@@ -43,9 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.warn("L'API ne trouve pas l'utilisateur, on simule la connexion...");
                     const data = await response.json();
                     // simulation : on stocke un "fake token" et on redirige vers l'accueil
-                    localStorage.setItem("user", data.user);
-                    alert("Vous vous êtes connecté avec succès !");
-                    window.location.href = "index.html";
+                    alert("identifiants incorrects");
                 }
             } catch (error) {
                 console.error("Erreur lors de la connexion :", error);
