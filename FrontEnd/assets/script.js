@@ -350,6 +350,7 @@ function addProject() {
    const modale = document.getElementById("myModal");
    const addButton = document.querySelector(".modal-add-button");
    const modalContent = document.querySelector(".modal-content")
+   modalContent.classList.add("modale-add-content");
    addButton.addEventListener("click", () => {
   // Au clic sur "Ajouter un contenu"
    modalContent.innerHTML = "";
@@ -373,14 +374,28 @@ function addProject() {
     modale.style.display = "none";
   }
  
-  
-  
-
-
+//Création de l'input de type "file", permettant d'ajouter des fichiers
    const inputFile = document.createElement("input");
    modalContent.appendChild(inputFile);
-   inputFile.innerHTML =`<input type="file" accept="image/png, image/jpeg"></input>`
+   inputFile.type = "file";
+   inputFile.accept = "image/png, image/jpeg"
    inputFile.classList.add("input-file")
+
+//Création d'un div permettant
+
+//Création des input Catégorie et titre
+const inputCategory = document.createElement("input");
+inputCategory.classList.add("input-modale")
+modalContent.appendChild(inputCategory)
+
+const inputTitle = document.createElement("input");
+inputTitle.classList.add("input-modale");
+modalContent.appendChild(inputTitle);
+
+//Création du bouton permettant de valider la soumission 
+const addButton = document.createElement("button");
+addButton.classList.add("modale-add-button");
+modalContent.appendChild(addButton);
 
 
    
