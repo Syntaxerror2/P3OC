@@ -36,13 +36,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (response.ok === true) {
                     // Connexion réussie
                     const data = await response.json();
+                    console.log("Données reçues du serveur :", data);
                     console.log("Utilisateur connecté !");
-                    localStorage.setItem("user", data.user);
-                    window.location.href = "index.html";
+                    localStorage.setItem("token", data.token);
+                   window.location.href = "index.html"; 
                 } else {
-                    console.warn("L'API ne trouve pas l'utilisateur, on simule la connexion...");
-                    const data = await response.json();
-                    // simulation : on stocke un "fake token" et on redirige vers l'accueil
+                    
+                    
+                  
                     alert("identifiants incorrects");
                 }
             } catch (error) {

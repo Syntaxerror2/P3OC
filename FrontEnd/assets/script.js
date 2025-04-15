@@ -4,6 +4,8 @@
 getCategories()
 createWorks();
 
+console.log(localStorage.getItem("token"));
+
 document.addEventListener("DOMContentLoaded", () => {
   localStorage.removeItem("deletedWork");
   // Reset les projets supprimés dans la modale au rechargement de la page
@@ -195,10 +197,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const authentification = document.getElementById("authentification");
 
   function checkLogIn() {
-    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
     // On permet à l'utilisateur de se log out en supprimant
     // les données obtenues dans le localStorage
-    if (user) {
+    if (token) {
       authentification.textContent = "Log out";
       authentification.href = "#";
 
@@ -221,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     alert("Vous avez été déconnecté !");
     window.location.reload();
   }
@@ -344,10 +346,10 @@ async function displayFilteredWorks() {
   });
 }
 
-/***********Ajoute des projets dans la modale*************/
+/***********Ajout des projets dans la modale*************/
 
 //Affichage du menu "ajoutez un projet" de la modale
- function generateModal() {
+function generateModal() {
   const modale = document.getElementById("myModal");
   const addButton = document.querySelector(".modal-add-button");
   const modalContent = document.querySelector(".modal-content")
@@ -385,14 +387,15 @@ async function displayFilteredWorks() {
     divAddModal.appendChild(inputFile);
     inputFile.type = "file";
     inputFile.accept = "image/png, image/jpeg"
-    inputFile.classList.add("input-file")
+    inputFile.id = "input-file"
 
     //Création des input Catégorie et titre
     const inputCategory = document.createElement("select");
     inputCategory.classList.add("input-modale");
     inputCategory.id = "category";
     divAddModal.appendChild(inputCategory);
-
+  
+    //Fetch des catégories pour affichage dans le <select>
     const categories = await getCategories()
     console.log(categories);
     categories.forEach(category => {
@@ -414,39 +417,62 @@ async function displayFilteredWorks() {
     divAddModal.appendChild(validateButton);
     validateButton.textContent = "Valider";
 
+
+
+
     async function addProject() {
 
-      validateButton.addEventListener("submit", async function (event) {
+      validateButton.addEventListener("click", async function (event) {
         event.preventDefault();
+        // Récupération des valeurs des champs de saisie et de l'image
         const title = inputTitle.value.trim();
         const category = inputCategory.value.trim();
-        const image = inputFile.value;
-        if (!category || !title) {
+        const newWork = document.getElementById("input-file");
+        const image = newWork.files[0];
+        //Conversion de l'image en un format récupérable par l'API
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("title", title);
+        formData.append("category", parseInt(category));
+
+        
+        if (!category || !title || !image) {
           alert("Veuillez remplir tous les champs");
+          return;
         }
 
+        const maxSize= 4 * 1024 * 1024;
+        if (image.size > maxSize) {
+  alert("L’image dépasse la taille maximale autorisée (4 Mo).");
+  return;
+}
 
-/*
+
+
+
         try {
           let response = await fetch('http://localhost:5678/api/works', {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({ image, title, category })
+            body: formData,
           });
-        }
- if (response.ok) {
-          const newWork = await response.json()
+
+         
+        
+        if (response.ok) {
+          const data = await response.json()
           console.log(data);
-          let newWork = JSON.parse()
-          localStorage.setItem("newWork", JSON.stringify(newWork));
+          localStorage.setItem("newWork", JSON.stringify(data));
+          alert("Votre projet a été ajouté à la galerie !")
+        } else {
+          alert("Un problème est survenu, veuillez réessayer ultérieurement");
         }
-
-*/
-
-// Chercher comment convertir une image en binaire
-
+      } catch(error) {
+        console.error("erreur lors du chargement du fichier");
+        alert("erreur lors du chargement du fichier");
+      }
 
       })
 
@@ -460,13 +486,4 @@ generateModal();
 
 
 
-
-
-//curl -X 'POST' \
-//'http://localhost:5678/api/works' \
-//-H 'accept: application/json' \
-//-H 'Content-Type: multipart/form-data' \
-//-F 'image=' \
-//-F 'title=' \
-//-F 'category='
-
+//Fin du projet : revoir mes formulaires d'erreur
