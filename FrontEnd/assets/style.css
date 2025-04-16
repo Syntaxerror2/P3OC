@@ -279,7 +279,7 @@ footer nav ul {
 	margin-top: 50px;
   }
 
-  .modal-main-display {
+  .modal-main-display, .modale-add-content {
 	display: flex;
     flex-wrap: wrap;
 	gap: 2%;
@@ -397,7 +397,13 @@ footer nav ul {
 	margin-top: 20px;
  }
 
-
+ .input-modale {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-top: 20px;
+ }
 
 
 

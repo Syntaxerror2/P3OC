@@ -415,12 +415,58 @@ function generateModal() {
     closeSpan.innerHTML = `<span class="close">&times;</span>`
     spanContainer.appendChild(closeSpan);
 
+    //Création du nouveau h3 de la modale
+    const modalAddTitle = document.createElement("h3");
+    modalAddTitle.classList.add("modale-title")
+    divAddModal.appendChild(modalAddTitle);
+    modalAddTitle.innerHTML = "Ajout photo";
 
-    // Quand on clique sur supprimer ou en dehors de la modale, on ferme la fenêtre
+
+    //Création de l'input de type "file", permettant d'ajouter des fichiers
+    const inputFile = document.createElement("input");
+    divAddModal.appendChild(inputFile);
+    inputFile.type = "file";
+    inputFile.accept = "image/png, image/jpeg"
+    inputFile.id = "input-file"
+
+    //Création du <select> catégorie
+    const selectTitle = document.createElement("h4");
+    divAddModal.appendChild(selectTitle);
+    selectTitle.innerHTML = "Catégorie";
+    const inputCategory = document.createElement("select");
+    inputCategory.classList.add("input-modale");
+    inputCategory.id = "category";
+    divAddModal.appendChild(inputCategory);
+  
+    //Fetch des catégories pour affichage dans le <select>
+    const categories = await getCategories()
+    console.log(categories);
+    categories.forEach(category => {
+      console.log(category)
+    const optionCategory = document.createElement("option");
+    optionCategory.value = category.id;
+    optionCategory.innerHTML = category.name;
+    inputCategory.appendChild(optionCategory);
+})
+    //Création de l'input "Titre"
+    const titreTitle = document.createElement("h4");
+    divAddModal.appendChild(titreTitle);
+    titreTitle.innerHTML = "Titre";
+    const inputTitle = document.createElement("input");
+    inputTitle.classList.add("input-modale");
+    inputTitle.id = "title";
+    divAddModal.appendChild(inputTitle)
+
+    //Création du bouton permettant de valider la soumission de projets
+    const validateButton = document.createElement("button");
+    validateButton.classList.add("modale-validate-button");
+    divAddModal.appendChild(validateButton);
+    validateButton.textContent = "Valider";
+
+   // Quand on clique sur supprimer ou en dehors de la modale, on ferme la fenêtre
     closeSpan.onclick = function () {
-      modale.style.display = "none";
-    }
-
+    modale.style.display = "none";
+}
 
 
     /*************Générer le contenu premier de la modale au click sur la back arrow**************** */
@@ -477,49 +523,7 @@ function generateModal() {
       });
     });
 
-   /*******************************************************************************/
-    //Création de l'input de type "file", permettant d'ajouter des fichiers
-    const modalAddTitle = document.createElement("h3");
-    divAddModal.appendChild(modalAddTitle);
-    modalAddTitle.innerHTML = "Ajout photo";
-
-    const inputFile = document.createElement("input");
-    divAddModal.appendChild(inputFile);
-    inputFile.type = "file";
-    inputFile.accept = "image/png, image/jpeg"
-    inputFile.id = "input-file"
-
-    //Création des input Catégorie et titre
-    const inputCategory = document.createElement("select");
-    inputCategory.classList.add("input-modale");
-    inputCategory.id = "category";
-    divAddModal.appendChild(inputCategory);
-  
-    //Fetch des catégories pour affichage dans le <select>
-    const categories = await getCategories()
-    console.log(categories);
-    categories.forEach(category => {
-      console.log(category)
-    const optionCategory = document.createElement("option");
-    optionCategory.value = category.id;
-    optionCategory.innerHTML = category.name;
-    inputCategory.appendChild(optionCategory);
-})
-
-    const inputTitle = document.createElement("input");
-    inputTitle.classList.add("input-modale");
-    inputTitle.id = "title";
-    divAddModal.appendChild(inputTitle)
-
-    //Création du bouton permettant de valider la soumission de projets
-    const validateButton = document.createElement("button");
-    validateButton.classList.add("modale-validate-button");
-    divAddModal.appendChild(validateButton);
-    validateButton.textContent = "Valider";
-
-
-
-    //Fonction permettant l'envoie de projets type "jpg/png" via formData
+    /*******************Fonction permettant l'envoie de projets type "jpg/png" via formData*************/
     async function addProject() {
 
       validateButton.addEventListener("click", async function (event) {
@@ -546,8 +550,6 @@ function generateModal() {
   alert("L’image dépasse la taille maximale autorisée (4 Mo).");
   return;
 }
-
-
 
 //Envoie de formData à l'API
         try {
@@ -586,7 +588,7 @@ function generateModal() {
 
   })
 }
- /*generateModal();*/
+
 
 
 
