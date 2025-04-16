@@ -425,7 +425,7 @@ function generateModal() {
     imageUpload.innerHTML = `
   <i class="fa-regular fa-image"></i>
   <button class="button-upload">+ Ajouter photo</button>
-  <p>jpg, png : 4mo max</p>`;
+  <p class="p-file">jpg, png : 4mo max</p>`;
      divAddModal.appendChild(imageUpload);
 
 
@@ -441,7 +441,7 @@ function generateModal() {
     imageUpload.addEventListener("click", () => {
       inputFile.click();
     })
-
+/*
     //Event permettant l'affichage d'une preview de l'image rentrée en input
     inputFile.addEventListener("change", () => {
       const file = inputFile.files[0];
@@ -453,11 +453,16 @@ function generateModal() {
           img.classList.add("image-preview");
           imageUpload.innerHTML = ""; // supprime l'icone, le bouton et le texte
           imageUpload.appendChild(img);
+
+        //Ajouter effet sur le bouton si un fichier est ajouté
+          
+
+
         };
         reader.readAsDataURL(file);
       }
     });
-    
+    */
 
 
      //Création de l'input "Titre"
@@ -479,6 +484,11 @@ function generateModal() {
     inputCategory.classList.add("input-modale");
     inputCategory.id = "category";
     divAddModal.appendChild(inputCategory);
+
+    // Ligne de séparation (bordure)
+    const border = document.createElement("div");
+    border.classList.add("modal-border-2");
+    divAddModal.appendChild(border);
   
     //Fetch des catégories pour affichage dans le <select>
     const categories = await getCategories()
@@ -518,6 +528,7 @@ function generateModal() {
       closeSpan.innerHTML = `&times;`;
       closeSpan.classList.add("close");
       modalContent.appendChild(closeSpan);
+
       closeSpan.onclick = () => {
         modale.style.display = "none";
       };
@@ -636,6 +647,6 @@ function generateModal() {
 
 
 
-
+//Ajouter effet bouton lorsqu'un projet est ajouté
 
 
