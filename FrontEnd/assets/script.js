@@ -386,26 +386,24 @@ async function displayFilteredWorks() {
 
 /***********Display de la section ajout des projets dans la modale*************/
 
-//Affichage du menu "ajoutez un projet" de la modale
+   //Affichage du menu "ajoutez un projet" de la modale
 function generateModal() {
-  const modale = document.getElementById("myModal");
-  const addButton = document.querySelector(".modal-add-button");
-  const modalContent = document.querySelector(".modal-content")
-  //modalContent.classList.add("modale-add-content");
-  addButton.addEventListener("click", async () => {
+   const modale = document.getElementById("myModal");
+   const addButton = document.querySelector(".modal-add-button");
+   const modalContent = document.querySelector(".modal-content")
+   addButton.addEventListener("click", async () => {
     // Au clic sur "Ajouter un contenu" on vide le contenu de la modale pour le modifier
     modalContent.innerHTML = "";
-
-    //Div contenant l'ensemble des éléments de la seconde modale
-    const divAddModal = document.createElement("div")
-    divAddModal.classList.add("modale-add-content");
-    modalContent.appendChild(divAddModal);
-
 
     // Création de la div contenant les spans et icones
     const spanContainer = document.createElement("div");
     spanContainer.classList.add("span-container");
-    divAddModal.appendChild(spanContainer);
+    modalContent.appendChild(spanContainer)
+
+    //Div contenant le menu de la seconde modale
+    const divAddModal = document.createElement("div")
+    divAddModal.classList.add("modale-add-content");
+    modalContent.appendChild(divAddModal);
 
     //Création des spans delete et icone supprimer
     const backArrowSpan = document.createElement("i");
@@ -420,17 +418,46 @@ function generateModal() {
     modalAddTitle.classList.add("modale-title")
     divAddModal.appendChild(modalAddTitle);
     modalAddTitle.innerHTML = "Ajout photo";
+    
+    //Création de la div permettant un input de type "file" stylisé
+    const imageUpload = document.createElement("div");
+    imageUpload.classList.add("image-upload");
+    imageUpload.innerHTML = `
+  <i class="fa-regular fa-image"></i>
+  <button class="buttons">+ Ajouter une photo</button>
+  <p>jpg, png : 4mo max</p>`;
+     divAddModal.appendChild(imageUpload);
 
 
     //Création de l'input de type "file", permettant d'ajouter des fichiers
     const inputFile = document.createElement("input");
-    divAddModal.appendChild(inputFile);
     inputFile.type = "file";
-    inputFile.accept = "image/png, image/jpeg"
-    inputFile.id = "input-file"
+    inputFile.accept = "image/png, image/jpeg";
+    inputFile.id = "input-file";
+    inputFile.style.display = "none"
+    imageUpload.appendChild(inputFile);
+    
+    //Au click sur le div, on génère un click sur l'input
+    imageUpload.addEventListener("click", () => {
+      inputFile.click();
+    })
+
+    
+
+
+     //Création de l'input "Titre"
+     const titreTitle = document.createElement("h4");
+     titreTitle.classList.add("input-title")
+     divAddModal.appendChild(titreTitle);
+     titreTitle.innerHTML = "Titre";
+     const inputTitle = document.createElement("input");
+     inputTitle.classList.add("input-modale");
+     inputTitle.id = "title";
+     divAddModal.appendChild(inputTitle)
 
     //Création du <select> catégorie
     const selectTitle = document.createElement("h4");
+    selectTitle.classList.add("input-title")
     divAddModal.appendChild(selectTitle);
     selectTitle.innerHTML = "Catégorie";
     const inputCategory = document.createElement("select");
@@ -448,14 +475,7 @@ function generateModal() {
     optionCategory.innerHTML = category.name;
     inputCategory.appendChild(optionCategory);
 })
-    //Création de l'input "Titre"
-    const titreTitle = document.createElement("h4");
-    divAddModal.appendChild(titreTitle);
-    titreTitle.innerHTML = "Titre";
-    const inputTitle = document.createElement("input");
-    inputTitle.classList.add("input-modale");
-    inputTitle.id = "title";
-    divAddModal.appendChild(inputTitle)
+   
 
     //Création du bouton permettant de valider la soumission de projets
     const validateButton = document.createElement("button");
