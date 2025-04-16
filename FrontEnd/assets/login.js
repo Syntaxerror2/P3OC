@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert("identifiants incorrects");
                 }
             } catch (error) {
-                console.error("Erreur lors de la connexion :", error);
                 alert("Une erreur est survenue, veuillez réessayer plus tard.");
             }
         });

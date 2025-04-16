@@ -139,7 +139,8 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+    margin: auto;
+	margin-left: 33%;
 }
 #contact > * {
 	text-align: center;
@@ -395,6 +396,16 @@ footer nav ul {
 	background-color: #E8F1F6;
 	margin-top: 20px;
  }
+
+
+
+
+
+
+
+
+
+
 
 /** login page **/
 
