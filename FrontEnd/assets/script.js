@@ -424,7 +424,7 @@ function generateModal() {
     imageUpload.classList.add("image-upload");
     imageUpload.innerHTML = `
   <i class="fa-regular fa-image"></i>
-  <button class="buttons">+ Ajouter une photo</button>
+  <button class="button-upload">+ Ajouter photo</button>
   <p>jpg, png : 4mo max</p>`;
      divAddModal.appendChild(imageUpload);
 
@@ -442,6 +442,21 @@ function generateModal() {
       inputFile.click();
     })
 
+    //Event permettant l'affichage d'une preview de l'image rentrée en input
+    inputFile.addEventListener("change", () => {
+      const file = inputFile.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.classList.add("image-preview");
+          imageUpload.innerHTML = ""; // supprime l'icone, le bouton et le texte
+          imageUpload.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
     
 
 
@@ -543,35 +558,50 @@ function generateModal() {
       });
     });
 
-    /*******************Fonction permettant l'envoie de projets type "jpg/png" via formData*************/
-    async function addProject() {
+    /*******************Fonction permettant l'envoi de projets type "jpg/png" via formData*************/
 
+
+    async function addProject() {
       validateButton.addEventListener("click", async function (event) {
         event.preventDefault();
+
+        const newWork = document.getElementById("input-file");
+        if (!newWork) {
+          alert("Le champ de fichier n’a pas été trouvé.");
+          return;
+        }
+    
         // Récupération des valeurs des champs de saisie et de l'image
         const title = inputTitle.value.trim();
         const category = inputCategory.value.trim();
-        const newWork = document.getElementById("input-file");
         const image = newWork.files[0];
-        //Conversion de l'image en un format récupérable par l'API
-        const formData = new FormData();
-        formData.append("image", image);
-        formData.append("title", title);
-        formData.append("category", parseInt(category));
-
+    
+        if (!newWork) {
+          alert("Le champ de fichier n’a pas été trouvé.");
+          return;
+        }
+    
         
+    
         if (!category || !title || !image) {
           alert("Veuillez remplir tous les champs");
           return;
         }
-      //On impose une valeur max à la taille de l'image (4 Mo)
-        const maxSize= 4 * 1024 * 1024;
+    
+        // On impose une valeur max à la taille de l'image (4 Mo)
+        const maxSize = 4 * 1024 * 1024;
         if (image.size > maxSize) {
-  alert("L’image dépasse la taille maximale autorisée (4 Mo).");
-  return;
-}
-
-//Envoie de formData à l'API
+          alert("L’image dépasse la taille maximale autorisée (4 Mo).");
+          return;
+        }
+    
+        // Conversion de l'image en un format récupérable par l'API
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("title", title);
+        formData.append("category", parseInt(category));
+    
+        // Envoi à l'API
         try {
           let response = await fetch('http://localhost:5678/api/works', {
             method: "POST",
@@ -580,28 +610,23 @@ function generateModal() {
             },
             body: formData,
           });
-
-        if (response.ok) {
-          const data = await response.json()
-        // On récupère l'id des projets ajoutés par l'utilisateur
-          let userProjects = JSON.parse(localStorage.getItem("userProjects")) || [];
-          userProjects.push(data.id);
-          localStorage.setItem("userProjects", JSON.stringify(userProjects));
-          console.log(data);
-
-       
-          localStorage.setItem("newWork", JSON.stringify(data));
-          alert("Votre projet a été ajouté à la galerie !")
-        } else {
-          alert("Un problème est survenu, veuillez réessayer ultérieurement");
+    
+          if (response.ok) {
+            const data = await response.json();
+            let userProjects = JSON.parse(localStorage.getItem("userProjects")) || [];
+            userProjects.push(data.id);
+            localStorage.setItem("userProjects", JSON.stringify(userProjects));
+            localStorage.setItem("newWork", JSON.stringify(data));
+            location.reload();
+            alert("Votre projet a été ajouté à la galerie !");
+          } else {
+            alert("Un problème est survenu, veuillez réessayer ultérieurement");
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement du fichier", error);
+          alert("Erreur lors du chargement du fichier");
         }
-      } catch(error) {
-        console.error("erreur lors du chargement du fichier");
-        alert("erreur lors du chargement du fichier");
-      }
-
-      })
-
+      });
     }
 
     addProject()
