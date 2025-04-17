@@ -7,7 +7,7 @@ createWorks();
 console.log(localStorage.getItem("token"));
 
 document.addEventListener("DOMContentLoaded", () => {
- /* localStorage.removeItem("deletedWork"); */
+  /* localStorage.removeItem("deletedWork"); */
   // Reset les projets supprimés dans la modale au rechargement de la page
 
 });
@@ -291,40 +291,40 @@ async function modaleDisplay() {
     deleteButton.classList.add("delete-icon");
     deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
 
- 
 
 
-//Suppression au click
-deleteButton.addEventListener("click", async () => {
-  const isUserProject = JSON.parse(localStorage.getItem("userProjects") || "[]").includes(work.id);
 
-  if (isUserProject) {
-    // Suppression côté API
-    const token = localStorage.getItem("token");
-    try {
-      const res = await fetch(`http://localhost:5678/api/works/${work.id}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`
+    //Suppression au click 
+    deleteButton.addEventListener("click", async () => {
+      const isUserProject = JSON.parse(localStorage.getItem("userProjects") || "[]").includes(work.id);
+      //Suppression définitive côté API exclusivement si le projet est celui d'un utilisateur
+      if (isUserProject) {
+        // Suppression côté API
+        const token = localStorage.getItem("token");
+        try {
+          const res = await fetch(`http://localhost:5678/api/works/${work.id}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+          if (res.ok) {
+            divProjets.remove(); // Supprime visuellement de la gallerie
+            displayFilteredWorks();
+            console.log("Projet supprimé définitivement.");
+          } else {
+            alert("Erreur lors de la suppression du projet.");
+          }
+        } catch (error) {
+          console.error("Erreur lors de la requête DELETE", error);
         }
-      });
-      if (res.ok) {
-        divProjets.remove(); // Supprime visuellement de la gallerie
-        displayFilteredWorks();
-        console.log("Projet supprimé définitivement.");
       } else {
-        alert("Erreur lors de la suppression du projet.");
+        // Masquer seulement si le projet fait partie des projets initiaux (via localStorage)
+        saveDeletedWork(work.id);
+        divProjets.remove();
+        displayFilteredWorks();
       }
-    } catch (error) {
-      console.error("Erreur lors de la requête DELETE", error);
-    }
-  } else {
-    // Masquer seulement si le projet fait partie des projets initiaux (via localStorage)
-    saveDeletedWork(work.id);
-    divProjets.remove();
-    displayFilteredWorks();
-  }
-});
+    });
 
 
   })
@@ -363,11 +363,11 @@ async function displayFilteredWorks() {
   //On filtre de façon à ne conserver que les projets dont l'id n'est pas inclue dans deletedWorks (localStorage)
   const filteredWorks = allWorks.filter(work => !deletedWorks.includes(work.id));
 
-
+  //Si la gallerie n'existe pas, le code ci-dessous n'est pas exécuté
   if (!gallery) return;
 
   gallery.innerHTML = "";
-
+  //On affiche dynamiquement les travaux ainsi filtrés après avoir vidé la gallerie
   filteredWorks.forEach(work => {
     const figure = document.createElement("figure");
     const image = document.createElement("img");
@@ -386,12 +386,12 @@ async function displayFilteredWorks() {
 
 /***********Display de la section ajout des projets dans la modale*************/
 
-   //Affichage du menu "ajoutez un projet" de la modale
+//Affichage du menu "ajoutez un projet" de la modale
 function generateModal() {
-   const modale = document.getElementById("myModal");
-   const addButton = document.querySelector(".modal-add-button");
-   const modalContent = document.querySelector(".modal-content")
-   addButton.addEventListener("click", async () => {
+  const modale = document.getElementById("myModal");
+  const addButton = document.querySelector(".modal-add-button");
+  const modalContent = document.querySelector(".modal-content")
+  addButton.addEventListener("click", async () => {
     // Au clic sur "Ajouter un contenu" on vide le contenu de la modale pour le modifier
     modalContent.innerHTML = "";
 
@@ -415,10 +415,10 @@ function generateModal() {
 
     //Création du nouveau h3 de la modale
     const modalAddTitle = document.createElement("h3");
-    modalAddTitle.classList.add("modale-title")
+    modalAddTitle.classList.add("modale-add-title")
     divAddModal.appendChild(modalAddTitle);
     modalAddTitle.innerHTML = "Ajout photo";
-    
+
     //Création de la div permettant un input de type "file" stylisé
     const imageUpload = document.createElement("div");
     imageUpload.classList.add("image-upload");
@@ -426,7 +426,7 @@ function generateModal() {
   <i class="fa-regular fa-image"></i>
   <button class="button-upload">+ Ajouter photo</button>
   <p class="p-file">jpg, png : 4mo max</p>`;
-     divAddModal.appendChild(imageUpload);
+    divAddModal.appendChild(imageUpload);
 
 
     //Création de l'input de type "file", permettant d'ajouter des fichiers
@@ -436,44 +436,22 @@ function generateModal() {
     inputFile.id = "input-file";
     inputFile.style.display = "none"
     imageUpload.appendChild(inputFile);
-    
+
     //Au click sur le div, on génère un click sur l'input
     imageUpload.addEventListener("click", () => {
       inputFile.click();
     })
-/*
-    //Event permettant l'affichage d'une preview de l'image rentrée en input
-    inputFile.addEventListener("change", () => {
-      const file = inputFile.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = document.createElement("img");
-          img.src = e.target.result;
-          img.classList.add("image-preview");
-          imageUpload.innerHTML = ""; // supprime l'icone, le bouton et le texte
-          imageUpload.appendChild(img);
-
-        //Ajouter effet sur le bouton si un fichier est ajouté
-          
 
 
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-    */
-
-
-     //Création de l'input "Titre"
-     const titreTitle = document.createElement("h4");
-     titreTitle.classList.add("input-title")
-     divAddModal.appendChild(titreTitle);
-     titreTitle.innerHTML = "Titre";
-     const inputTitle = document.createElement("input");
-     inputTitle.classList.add("input-modale");
-     inputTitle.id = "title";
-     divAddModal.appendChild(inputTitle)
+    //Création de l'input "Titre"
+    const titreTitle = document.createElement("h4");
+    titreTitle.classList.add("input-title")
+    divAddModal.appendChild(titreTitle);
+    titreTitle.innerHTML = "Titre";
+    const inputTitle = document.createElement("input");
+    inputTitle.classList.add("input-modale");
+    inputTitle.id = "title";
+    divAddModal.appendChild(inputTitle)
 
     //Création du <select> catégorie
     const selectTitle = document.createElement("h4");
@@ -489,18 +467,18 @@ function generateModal() {
     const border = document.createElement("div");
     border.classList.add("modal-border-2");
     divAddModal.appendChild(border);
-  
+
     //Fetch des catégories pour affichage dans le <select>
     const categories = await getCategories()
     console.log(categories);
     categories.forEach(category => {
       console.log(category)
-    const optionCategory = document.createElement("option");
-    optionCategory.value = category.id;
-    optionCategory.innerHTML = category.name;
-    inputCategory.appendChild(optionCategory);
-})
-   
+      const optionCategory = document.createElement("option");
+      optionCategory.value = category.id;
+      optionCategory.innerHTML = category.name;
+      inputCategory.appendChild(optionCategory);
+    })
+
 
     //Création du bouton permettant de valider la soumission de projets
     const validateButton = document.createElement("button");
@@ -508,21 +486,21 @@ function generateModal() {
     divAddModal.appendChild(validateButton);
     validateButton.textContent = "Valider";
 
-   // Quand on clique sur supprimer ou en dehors de la modale, on ferme la fenêtre
+    // Quand on clique sur supprimer ou en dehors de la modale, on ferme la fenêtre
     closeSpan.onclick = function () {
-    modale.style.display = "none";
-}
+      modale.style.display = "none";
+    }
 
 
     /*************Générer le contenu premier de la modale au click sur la back arrow**************** */
-    
+
     backArrowSpan.addEventListener("click", async () => {
       const modalContent = document.querySelector(".modal-content");
       const modale = document.getElementById("myModal");
-    
+
       //Quand on clique sur la span "back arrow", on efface le contenu via innerhtml = ""
       modalContent.innerHTML = "";
-    
+
       // La croix de fermeture
       const closeSpan = document.createElement("span");
       closeSpan.innerHTML = `&times;`;
@@ -532,42 +510,70 @@ function generateModal() {
       closeSpan.onclick = () => {
         modale.style.display = "none";
       };
-    
+
       // Titre "Galerie photo"
       const header = document.createElement("div");
       header.classList.add("modale-header-display");
-    
+
       const title = document.createElement("h3");
       title.classList.add("modale-title");
       title.textContent = "Galerie photo";
-    
+
       header.appendChild(title);
       modalContent.appendChild(header);
-    
+
       // Galerie des projets
       const mainDisplay = document.createElement("div");
       mainDisplay.classList.add("modal-main-display");
       modalContent.appendChild(mainDisplay);
-    
+
       // Ligne de séparation (bordure)
       const border = document.createElement("div");
       border.classList.add("modal-border");
       modalContent.appendChild(border);
-    
+
       // Bouton "Ajouter une photo"
       const addButton = document.createElement("button");
       addButton.classList.add("modal-add-button");
       addButton.textContent = "Ajouter une photo";
       modalContent.appendChild(addButton);
-    
+
       // On fait appel à la fonction d'affichage de la modale
       await modaleDisplay();
-    
+
       // On replace le bouton "Ajouter une photo"
       addButton.addEventListener("click", async () => {
         await generateModal(); // On appelle le formulaire de création de projet
       });
     });
+
+    //Event permettant l'affichage d'une preview de l'image rentrée en input
+    inputFile.addEventListener("change", () => {
+      const file = inputFile.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.classList.add("image-preview");
+          // supprime l'icone, le bouton et le texte
+
+          imageUpload.appendChild(img);
+
+          //Effet sur le bouton "valider" lorsqu'une image valide est rentrée en input
+          validateButton.classList.remove("modale-validate-button")
+          validateButton.classList.add("modale-validated-button")
+
+          //Ajouter effet sur le bouton si un fichier est ajouté
+
+
+
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+
 
     /*******************Fonction permettant l'envoi de projets type "jpg/png" via formData*************/
 
@@ -581,37 +587,30 @@ function generateModal() {
           alert("Le champ de fichier n’a pas été trouvé.");
           return;
         }
-    
+
         // Récupération des valeurs des champs de saisie et de l'image
         const title = inputTitle.value.trim();
         const category = inputCategory.value.trim();
         const image = newWork.files[0];
-    
-        if (!newWork) {
-          alert("Le champ de fichier n’a pas été trouvé.");
-          return;
-        }
-    
-        
-    
+
         if (!category || !title || !image) {
           alert("Veuillez remplir tous les champs");
           return;
         }
-    
+
         // On impose une valeur max à la taille de l'image (4 Mo)
         const maxSize = 4 * 1024 * 1024;
         if (image.size > maxSize) {
           alert("L’image dépasse la taille maximale autorisée (4 Mo).");
           return;
         }
-    
+
         // Conversion de l'image en un format récupérable par l'API
         const formData = new FormData();
         formData.append("image", image);
         formData.append("title", title);
         formData.append("category", parseInt(category));
-    
+
         // Envoi à l'API
         try {
           let response = await fetch('http://localhost:5678/api/works', {
@@ -621,15 +620,17 @@ function generateModal() {
             },
             body: formData,
           });
-    
+
           if (response.ok) {
             const data = await response.json();
             let userProjects = JSON.parse(localStorage.getItem("userProjects")) || [];
             userProjects.push(data.id);
             localStorage.setItem("userProjects", JSON.stringify(userProjects));
             localStorage.setItem("newWork", JSON.stringify(data));
-            location.reload();
             alert("Votre projet a été ajouté à la galerie !");
+            window.location.reload();
+            //On vide le formulaire si la réponse de l'API est valide
+            inputTitle.value = "";
           } else {
             alert("Un problème est survenu, veuillez réessayer ultérieurement");
           }
@@ -647,6 +648,12 @@ function generateModal() {
 
 
 
-//Ajouter effet bouton lorsqu'un projet est ajouté
+
+
+
+
+
+
+
 
 
