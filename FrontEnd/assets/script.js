@@ -1,8 +1,8 @@
-import {getDeleteWork} from './modale.js';
+import { getDeleteWork } from './modale.js';
 
 async function init() {
   await getDeleteWork();
-  
+
 }
 
 init();
@@ -143,7 +143,7 @@ export async function createWorks() {
 
       updateGallery(filteredWork)
     })
-//On filtre les travaux par catégorie
+    //On filtre les travaux par catégorie
     function updateGallery(filteredWork) {
       const gallery = document.querySelector(".gallery")
       gallery.innerHTML = "";
@@ -245,44 +245,44 @@ document.addEventListener("DOMContentLoaded", function () {
 /*********Ajout d'une fonction simulant un envoi du formulaire de contact à l'API ******/
 
 document.addEventListener("DOMContentLoaded", () => {
-	const form = document.querySelector(".sign-in");
+  const form = document.querySelector(".sign-in");
 
-	form.addEventListener("submit", (e) => {
-		e.preventDefault(); // Empêche l'envoi du formulaire
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); // Empêche l'envoi du formulaire
 
-		const emailInput = document.getElementById("email");
-		const email = emailInput.value.trim();
-        const nameInput = document.getElementById("name").value;
-        const messageInput = document.getElementById("message").value;
+    const emailInput = document.getElementById("email");
+    const email = emailInput.value.trim();
+    const nameInput = document.getElementById("name").value;
+    const messageInput = document.getElementById("message").value;
 
-		// Regex simple pour valider l'email
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Regex simple pour valider l'email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-		if (!emailRegex.test(email)) {
-			alert("Veuillez entrer une adresse email valide.");
-			emailInput.focus();
-			return;
-		}
+    if (!emailRegex.test(email)) {
+      alert("Veuillez entrer une adresse email valide.");
+      emailInput.focus();
+      return;
+    }
 
-        if(!nameInput || !messageInput) {
-            alert("Veuillez remplir tous les champs")
-            return;
-        }
-        
+    if (!nameInput || !messageInput) {
+      alert("Veuillez remplir tous les champs")
+      return;
+    }
 
-		//On simule un envoi à l'API
-		const formData = {
-			name: document.getElementById("name").value.trim(),
-			email: email,
-			message: document.getElementById("message").value.trim()
-		};
 
-		console.log("Formulaire prêt à être envoyé à l'API :", formData);
+    //On simule un envoi à l'API
+    const formData = {
+      name: document.getElementById("name").value.trim(),
+      email: email,
+      message: document.getElementById("message").value.trim()
+    };
 
-		alert("Message envoyé avec succès !");
-        //On réinitialise le formulaire
-		form.reset(); 
-	});
+    console.log("Formulaire prêt à être envoyé à l'API :", formData);
+
+    alert("Message envoyé avec succès !");
+    //On réinitialise le formulaire
+    form.reset();
+  });
 });
 
 
