@@ -108,7 +108,7 @@ async function createWorks() {
   const filters = document.getElementById("filters")
   const categories = await getCategories();
 
-  //// Création séparée du bouton "Tous"
+  //// Création séparée du bouton et de la catégorie "Tous"
   const allButton = document.createElement("button")
   allButton.dataset.categoryId = 0;
   allButton.innerHTML = "Tous"
@@ -134,7 +134,7 @@ async function createWorks() {
 
       updateGallery(filteredWork)
     })
-
+//On filtre les travaux par catégorie
     function updateGallery(filteredWork) {
       const gallery = document.querySelector(".gallery")
       gallery.innerHTML = "";
@@ -169,7 +169,6 @@ async function createWorks() {
       if (e.target.className === "buttons") {
         // Supprimer la classe active de tous les boutons
         document.querySelectorAll(".buttons").forEach(btn => btn.classList.remove("active-filter"));
-        //  querySelectorAll("#filters button")
         // Ajouter la classe active uniquement au bouton cliqué
         e.target.classList.add("active-filter");
       }
@@ -202,8 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function checkLogIn() {
     const token = localStorage.getItem("token");
-    // On permet à l'utilisateur de se log out en supprimant
-    // les données obtenues dans le localStorage
+    // On permet à l'utilisateur de se log out en supprimant les données obtenues dans le localStorage
     if (token) {
       authentification.textContent = "logout";
       authentification.href = "#";
@@ -248,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nameInput = document.getElementById("name").value;
         const messageInput = document.getElementById("message").value;
 
-		// Regex simple pour valider un email
+		// Regex simple pour valider l'email
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 		if (!emailRegex.test(email)) {
@@ -337,9 +335,8 @@ async function modaleDisplay() {
     //Suppression au click 
     deleteButton.addEventListener("click", async () => {
       const isUserProject = JSON.parse(localStorage.getItem("userProjects") || "[]").includes(work.id);
-      //Suppression définitive côté API exclusivement si le projet est celui d'un utilisateur
+      //Suppression définitive côté API
       if (isUserProject) {
-        // Suppression côté API
         const token = localStorage.getItem("token");
         try {
           const res = await fetch(`http://localhost:5678/api/works/${work.id}`, {
@@ -349,7 +346,7 @@ async function modaleDisplay() {
             }
           });
           if (res.ok) {
-            divProjets.remove(); // Supprime visuellement de la gallerie
+            divProjets.remove(); // Supprime visuellement de la galerie
             displayFilteredWorks();
             console.log("Projet supprimé définitivement.");
           } else {
@@ -374,7 +371,7 @@ modaleDisplay()
 
 
 
-//Récupération de la de gallerie en global Scope car elle reservira 
+//Récupération de la de gallerie en global scope
 const gallery = document.querySelector(".gallery");
 
 // Fonctions utilitaires pour le fonctionnement du LocalStorage
@@ -604,10 +601,6 @@ function generateModal() {
           validateButton.classList.remove("modale-validate-button")
           validateButton.classList.add("modale-validated-button")
 
-          //Ajouter effet sur le bouton si un fichier est ajouté
-
-
-
         };
         reader.readAsDataURL(file);
       }
@@ -663,9 +656,9 @@ function generateModal() {
 
           if (response.ok) {
             const data = await response.json();
-            //Si l'API renvoie une réponse valide, on vide la gallerie
+            //Si l'API renvoie une réponse valide, on vide la galerie
             gallery.innerHTML = "";
-            //Puis on fait appel à notre fonction de display de la gallerie
+            //Puis on fait appel à notre fonction de display de la galerie
             await createWorks();
             //Et enfin on push le nouveau projet au sein du localStorage
             let userProjects = JSON.parse(localStorage.getItem("userProjects")) || [];
