@@ -245,6 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		const emailInput = document.getElementById("email");
 		const email = emailInput.value.trim();
+        const nameInput = document.getElementById("name").value;
+        const messageInput = document.getElementById("message").value;
 
 		// Regex simple pour valider un email
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -254,6 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
 			emailInput.focus();
 			return;
 		}
+
+        if(!nameInput || !messageInput) {
+            alert("Veuillez remplir tous les champs")
+            return;
+        }
+        
 
 		//On simule un envoi à l'API
 		const formData = {
