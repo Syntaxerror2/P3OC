@@ -1,4 +1,3 @@
-
 const validateEmail = (email) => { 
     return String(email)
       .toLowerCase()
@@ -53,7 +52,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     loginForm();
 });
-
-
-
-

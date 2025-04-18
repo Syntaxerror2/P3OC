@@ -1,6 +1,3 @@
-
-
-
 getCategories()
 createWorks();
 
@@ -208,12 +205,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // On permet à l'utilisateur de se log out en supprimant
     // les données obtenues dans le localStorage
     if (token) {
-      authentification.textContent = "Log out";
+      authentification.textContent = "logout";
       authentification.href = "#";
 
-      // Si l'utilisateur est connecté, on ajoute la modale
+      // Si l'utilisateur est connecté, on ajoute le bouton ouvrant la modale
       // On change "log in" par "log out"
-      // Et on supprime les filtres
+      //On supprime les filtres
 
       const filters = document.getElementById("filters");
       filters.style.display = "none"; // Si l'utilisateur est connecté, on supprime les filtres
@@ -224,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
         logout();
       });
     } else {
-      authentification.textContent = "Log in";
+      authentification.textContent = "login";
       authentification.href = "login.html"; // Redirige vers la page de connexion
     }
   }
@@ -236,6 +233,41 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   checkLogIn();
+});
+
+/*********Ajout d'une fonction simulant un envoi du formulaire de contact à l'API ******/
+
+document.addEventListener("DOMContentLoaded", () => {
+	const form = document.querySelector(".sign-in");
+
+	form.addEventListener("submit", (e) => {
+		e.preventDefault(); // Empêche l'envoi du formulaire
+
+		const emailInput = document.getElementById("email");
+		const email = emailInput.value.trim();
+
+		// Regex simple pour valider un email
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (!emailRegex.test(email)) {
+			alert("Veuillez entrer une adresse email valide.");
+			emailInput.focus();
+			return;
+		}
+
+		//On simule un envoi à l'API
+		const formData = {
+			name: document.getElementById("name").value.trim(),
+			email: email,
+			message: document.getElementById("message").value.trim()
+		};
+
+		console.log("Formulaire prêt à être envoyé à l'API :", formData);
+
+		alert("Message envoyé avec succès !");
+        //On réinitialise le formulaire
+		form.reset(); 
+	});
 });
 
 
@@ -645,7 +677,6 @@ function generateModal() {
 
   })
 }
-
 
 
 
