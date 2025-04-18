@@ -663,14 +663,30 @@ function generateModal() {
 
           if (response.ok) {
             const data = await response.json();
+            //Si l'API renvoie une réponse valide, on vide la gallerie
+            gallery.innerHTML = "";
+            //Puis on fait appel à notre fonction de display de la gallerie
+            await createWorks();
+            //Et enfin on push le nouveau projet au sein du localStorage
             let userProjects = JSON.parse(localStorage.getItem("userProjects")) || [];
             userProjects.push(data.id);
             localStorage.setItem("userProjects", JSON.stringify(userProjects));
             localStorage.setItem("newWork", JSON.stringify(data));
             alert("Votre projet a été ajouté à la galerie !");
-            window.location.reload();
+
             //On vide le formulaire si la réponse de l'API est valide
+            const previewImage = imageUpload.querySelector(".image-preview");
+           if (previewImage) {
+              previewImage.remove();
+                  }
             inputTitle.value = "";
+            inputFile.value = "";
+
+            //On réinitialise le style du bouton
+            validateButton.classList.add("modale-validate-button");
+            validateButton.classList.remove("modale-validated-button");
+
+
           } else {
             alert("Un problème est survenu, veuillez réessayer ultérieurement");
           }
