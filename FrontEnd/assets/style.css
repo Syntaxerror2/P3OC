@@ -90,6 +90,7 @@ video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	text-decoration: none;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -413,10 +414,14 @@ footer nav ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 2%;
-	margin-left: 20px;
-	margin-right: 10%;
+	
 	justify-content: stretch;
 	margin-top: 0px;
+	display: flex;
+	flex-direction: column;
+	gap: 3%;
+	margin-left: 10%;
+	margin-right: 10%;
 }
 
 .modal-image {
@@ -507,13 +512,6 @@ footer nav ul {
 
 /*Modal add content */
 
-.modale-add-content {
-	display: flex;
-	flex-direction: column;
-	gap: 3%;
-	margin-left: 15%;
-	margin-right: 15%;
-}
 
 .modale-validate-button {
 	font-family: "Syne";
@@ -561,6 +559,8 @@ footer nav ul {
 
 
 /* Modal input */
+
+
 
 .p-file {
 	margin-bottom: 15px;
@@ -615,6 +615,7 @@ footer nav ul {
 	object-fit: cover;
 
 }
+
 
 
 .button-upload {

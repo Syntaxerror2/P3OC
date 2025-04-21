@@ -192,7 +192,7 @@ function generateModal() {
     imageUpload.innerHTML = `
     <i class="fa-regular fa-image"></i>
     <button class="button-upload">+ Ajouter photo</button>
-    <p class="p-file">jpg, png : 4mo max</p>`;
+    <p class="p-file" id="p-file">jpg, png : 4mo max</p>`;
     divAddModal.appendChild(imageUpload);
 
 
@@ -347,7 +347,7 @@ function generateModal() {
 
         const newWork = document.getElementById("input-file");
         if (!newWork) {
-          alert("Le champ de fichier n’a pas été trouvé.");
+          alert("Merci d'envoyer un fichier au format jpeg/png.");
           return;
         }
 
@@ -357,14 +357,14 @@ function generateModal() {
         const image = newWork.files[0];
 
         if (!category || !title || !image) {
-          alert("Veuillez remplir tous les champs");
+          alert("Merci de remplir tous les champs");
           return;
         }
 
         // On impose une valeur max à la taille de l'image (4 Mo)
         const maxSize = 4 * 1024 * 1024;
         if (image.size > maxSize) {
-          alert("L’image dépasse la taille maximale autorisée (4 Mo).");
+          alert("Votre image dépasse la taille maximale autorisée.");
           return;
         }
 
@@ -411,7 +411,7 @@ function generateModal() {
 
 
           } else {
-            alert("Un problème est survenu, veuillez réessayer ultérieurement");
+            alert("Un problème est survenu, merci de réessayer ultérieurement");
           }
         } catch (error) {
           console.error("Erreur lors du chargement du fichier", error);

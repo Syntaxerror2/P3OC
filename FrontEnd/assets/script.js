@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!nameInput || !messageInput) {
-      alert("Veuillez remplir tous les champs")
+      alert("Merci de remplir tous les champs")
       return;
     }
 
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("Formulaire prêt à être envoyé à l'API :", formData);
 
-    alert("Message envoyé avec succès !");
+    alert("Merci, nous avons bien reçu votre message.");
     //On réinitialise le formulaire
     form.reset();
   });
