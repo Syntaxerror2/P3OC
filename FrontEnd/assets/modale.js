@@ -186,7 +186,7 @@ function generateModal() {
     divAddModal.appendChild(modalAddTitle);
     modalAddTitle.innerHTML = "Ajout photo";
 
-    //Création de la div permettant un input de type "file" stylisé
+    //Création de la div contenant un input de type "file"
     const imageUpload = document.createElement("div");
     imageUpload.classList.add("image-upload");
     imageUpload.innerHTML = `
@@ -204,11 +204,10 @@ function generateModal() {
     inputFile.style.display = "none"
     imageUpload.appendChild(inputFile);
 
-    //Au click sur le div, on génère un click sur l'input
+    //Au click sur la div, on génère un click sur l'input
     imageUpload.addEventListener("click", () => {
       inputFile.click();
     })
-
 
     //Création de l'input "Titre"
     const titreTitle = document.createElement("h4");
