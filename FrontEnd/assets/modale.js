@@ -51,7 +51,6 @@ async function modaleDisplay() {
     const image = document.createElement("img");
     image.classList.add("modal-image");
     image.src = work.imageUrl;
-    console.log(work.imageUrl);
     divProjets.appendChild(image);
 
     // Création de l'icône "delete"
@@ -104,11 +103,14 @@ modaleDisplay()
 //Récupération de la de gallerie en global scope
 const gallery = document.querySelector(".gallery");
 
-// Fonctions utilitaires pour le fonctionnement du LocalStorage
+// On enregistre l'id des projets supprimés afin de mémoriser les projets supprimés localement
 function saveDeletedWork(id) {
   let deletedWork = JSON.parse(localStorage.getItem("deletedWork")) || [];
+// On vérifie que l'ID n'est pas déjà présente dans les projets supprimés
   if (!deletedWork.includes(id)) {
+  //Auquel cas on ajoute l'id et l'objet dans le localStorage
     deletedWork.push(id);
+  //On met à jour le LocalStorage en convertissant à nouveau l'élément en json
     localStorage.setItem("deletedWork", JSON.stringify(deletedWork));
   }
 }
@@ -236,9 +238,7 @@ function generateModal() {
 
     //Fetch des catégories pour affichage dans le <select>
     const categories = await getCategories()
-    console.log(categories);
     categories.forEach(category => {
-      console.log(category)
       const optionCategory = document.createElement("option");
       optionCategory.value = category.id;
       optionCategory.innerHTML = category.name;
@@ -317,6 +317,7 @@ function generateModal() {
     inputFile.addEventListener("change", () => {
       const file = inputFile.files[0];
       if (file) {
+    //Permet la lecture d'un fichier à partir d'un input, côté utilisateur
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = document.createElement("img");
@@ -331,7 +332,9 @@ function generateModal() {
           validateButton.classList.add("modale-validated-button")
 
         };
-        reader.readAsDataURL(file);
+        // fonction permettant de lire le fichier de manière asynchrone 
+        // convertit le fichier en URL de données, directement utilisable dans le navigateur
+        reader.readAsDataURL(file); 
       }
     });
 

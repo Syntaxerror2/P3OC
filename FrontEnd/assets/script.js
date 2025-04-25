@@ -10,13 +10,7 @@ getCategories()
 createWorks();
 
 
-console.log(localStorage.getItem("token"));
 
-document.addEventListener("DOMContentLoaded", () => {
-  /* localStorage.removeItem("deletedWork"); */
-  // Reset les projets supprimés dans la modale au rechargement de la page
-
-});
 
 /****************Fetch des travaux à afficher****************/
 
@@ -71,10 +65,10 @@ export async function createWorks() {
   const allWorks = await getWorks();
   const deletedWorks = getDeleteWork();
   const userWorks = JSON.parse(localStorage.getItem("userProjects")) || [];
-  console.log(deletedWorks);
 
   // On supprime de userWorks les ID qui ne sont plus présents dans allWorks
   const currentWorkIds = allWorks.map(work => work.id);
+  // On compare et on filtre afin de savoir si les ID des projets utilisateurs sont toujours présents dans l'objet récupéré
   const updatedUserProjects = userWorks.filter(id => currentWorkIds.includes(id));
   localStorage.setItem("userProjects", JSON.stringify(updatedUserProjects));
 
@@ -104,7 +98,6 @@ export async function createWorks() {
     image.alt = work.title
     const figcaption = document.createElement("figcaption")
     figcaption.innerHTML = work.title;
-    console.log(work);
     figure.appendChild(image);
     figure.appendChild(figcaption)
     gallery.appendChild(figure);
@@ -131,12 +124,11 @@ export async function createWorks() {
     filters.appendChild(button);
 
     button.addEventListener("click", function (e) {
-      console.log(e)
+
 
       // ParseInt me renvoie un entier, target me renvoie le nombre correspondant au dataset 
       // que j'ai ajouté à mon button, à savoir le works.categoryId du boutton cliqué
       const categoryId = parseInt(e.target.dataset.categoryId);
-      console.log(categoryId);
       //Je demande si categoryId (l'ID obtenue au click) est égal à 0, si oui on affiche tout.
       //Si non, on utilise la fonction filter pour afficher les objets correspondants dans le tableau work
       const filteredWork = categoryId === 0 ? works : works.filter(work => work.categoryId === categoryId)
@@ -182,10 +174,6 @@ export async function createWorks() {
         e.target.classList.add("active-filter");
       }
 
-      const test1 = document.querySelectorAll(".buttons")
-      const test2 = document.querySelector(".buttons")
-      console.log(test1);
-      console.log(test2);
     });
   })
 }
